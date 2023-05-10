@@ -3,6 +3,8 @@ import torch
 import streamlit as st
 from transformers import GPT2Tokenizer, GPT2LMHeadModel,BartTokenizer,BartForConditionalGeneration
 import spacy
+import spacy.cli
+spacy.cli.download("en_core_web_sm")
 nlp=spacy.load("en_core_web_sm")
 from spacy import displacy
 
