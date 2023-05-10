@@ -1,0 +1,7 @@
+streamlit==1.22.0
+transformers
+torch
+spacy
+pandas
+nltk
+re
