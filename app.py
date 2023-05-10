@@ -45,10 +45,12 @@ go = st.button('Generate')   # add a 'Generate button' to run the selected langu
 
 # Define the output directory
 if option_model=='GPT-2':
-    output_dir = "7. Models/"+'80K_GPT2_v2'+"/"
+    model_dir = "amyyang/80K-GPT2-v2"
+    token_dir = "amyyang/token-80K-GPT2-v2"
 
 else:
-    output_dir = "7. Models/"+'80K_BART_v2'+"/"
+    model_dir = "amyyang/80K-BART-v2"
+    token_dir = "amyyang/token-80K-BART-v2" 
 
 
 # Assign cuda to the device to use for training
@@ -66,8 +68,8 @@ device = torch.device(dev)
 
 # Define the function to generate corrected sentence using GPT-2 model
 def generate_prediction(prompt, max_length=100, temperature=1.0, top_p=1.0):
-    model = GPT2LMHeadModel.from_pretrained(output_dir).to(device)
-    tokenizer = GPT2Tokenizer.from_pretrained(output_dir)
+    model = GPT2LMHeadModel.from_pretrained(model_dir).to(device)
+    tokenizer = GPT2Tokenizer.from_pretrained(token_dir)
     input_ids = tokenizer.encode(prompt, return_tensors='pt').to(device)
     attention_mask = torch.ones(input_ids.shape, dtype=torch.long, device=device)
     with torch.no_grad():
@@ -86,7 +88,7 @@ def generate_prediction(prompt, max_length=100, temperature=1.0, top_p=1.0):
 def model_running(model):
     if go and model=='GPT-2':
         try:
-            tokenizer = GPT2Tokenizer.from_pretrained(output_dir)
+            tokenizer = GPT2Tokenizer.from_pretrained(token_dir)
             prompt = f"input: {original} output:"
             prompt_length = len(tokenizer.encode(prompt))
             dynamic_max_length = int(1.5 * len(original.split())) + prompt_length
@@ -104,8 +106,8 @@ def model_running(model):
 
     elif go and model=='BART':
         try:
-            model = BartForConditionalGeneration.from_pretrained(output_dir)
-            tokenizer = BartTokenizer.from_pretrained(output_dir)
+            model = BartForConditionalGeneration.from_pretrained(model_dir)
+            tokenizer = BartTokenizer.from_pretrained(token_dir)
 
             # Tokenize the input text
             input_ids = tokenizer.encode(original, return_tensors='pt')
