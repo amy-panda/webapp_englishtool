@@ -3,5 +3,5 @@ transformers
 torch
 spacy
 pandas
-nltk
+nltk==3.8.1
 re
